@@ -1,2 +1,2 @@
 # CNN_image_classifications
-tju 大作业
+tju 《数据分析大作业》
