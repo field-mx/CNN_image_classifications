@@ -2,6 +2,7 @@ import os
 import shutil
 import random
 
+
 class ImageProcess:
     @staticmethod
     def split_images(source_dir, train_dir, val_dir, test_dir, train_ratio=0.7, val_ratio=0.2, test_ratio=0.1):
@@ -60,7 +61,9 @@ class ImageProcess:
                 # 处理当前子文件夹中的图片
                 ImageProcess.split_images(subfolder, train_dir, val_dir, test_dir, train_ratio, val_ratio, test_ratio)
 
+
 if __name__ == "__main__":
     source_directory = 'data/RSI-CB128-after_delete'
     output_directory = 'data/output'
     ImageProcess.process_all_subfolders(source_directory, output_directory)
+#  还未添加图像变化处理如旋转等
