@@ -5,7 +5,7 @@ import torchvision.transforms as transforms
 from torchvision import datasets
 from torch.utils.data import DataLoader
 from hw5z1j_1 import RestNet18
-
+from block_net import HakiNet_8
 
 print(torch.__version__)
 print(torch.version.cuda)
@@ -45,8 +45,8 @@ def main():
 
     device = torch.device('cuda')
 
-    # 使用封装ResNet
-    model = RestNet18().to(device)
+    # 使用封装HakiNet_8
+    model = HakiNet_8().to(device)
 
     # 损失函数及优化器
     criteon = nn.CrossEntropyLoss().to(device)
