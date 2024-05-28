@@ -189,6 +189,7 @@ class rSoftMax(nn.Module):
 class ressblock(nn.Module):
     def __init__(self, in_channels, channels, stride=1, dilation=1):
         super(ressblock, self).__init__()
+        self.stride = stride
         self.conv1 = nn.Conv2d(in_channels, channels, kernel_size=1, stride=1, padding=0, dilation=1, bias=False)
         self.bn1 = nn.BatchNorm2d(channels)
         self.conv2 = nn.Conv2d(channels, channels, kernel_size=3, stride=stride, padding=dilation, dilation=dilation, bias=False)
