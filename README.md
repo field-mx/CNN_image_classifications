@@ -6,3 +6,4 @@ pytorch——>1.12.0
 <1>
 image_pre_process.py会在data中构建一个output文件夹，按照721的比例划分训练集、验证集合与测试集合
 
+<2>Customdata文件是用于生成csv数据集的，然而似乎并不需要
