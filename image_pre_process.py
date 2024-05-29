@@ -2,7 +2,47 @@ import os
 import shutil
 import random
 
+import numpy as np
+import torch
+import torch
+import torchvision.transforms as transforms
+from torchvision import datasets
+from torch.utils.data import DataLoader
+import os
+
 class ImageProcess:
+    def get_one_hot_labels(self, data_dir):
+        # 加载数据集
+        transform = transforms.Compose([
+            transforms.Resize((128, 128)),  # 你可以根据需要调整图像大小
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+        ])
+
+        dataset = datasets.ImageFolder(data_dir, transform=transform)
+        data_loader = DataLoader(dataset, batch_size=1, shuffle=False)
+
+        # 获取类别名称和类别到标签的映射
+        classes = dataset.classes
+        class_to_idx = dataset.class_to_idx
+        num_classes = len(classes)
+
+        print("Classes:", classes)
+        print("Class to index mapping:", class_to_idx)
+
+        # 生成独热编码标签
+        one_hot_labels = []
+
+        for _, label in data_loader:
+            label = label.item()  # 获取标签索引
+            one_hot = torch.nn.functional.one_hot(torch.tensor(label), num_classes)
+            one_hot_labels.append(one_hot.numpy())
+
+        # 将列表转换为一个大的 NumPy 矩阵
+        one_hot_matrix = np.vstack(one_hot_labels)
+        return one_hot_matrix
+
+        return one_hot_labels
     @staticmethod
     def split_images(source_dir, train_dir, val_dir, test_dir, train_ratio=0.7, val_ratio=0.2, test_ratio=0.1):
         # 获取所有图片文件的列表
@@ -60,7 +100,17 @@ class ImageProcess:
                 # 处理当前子文件夹中的图片
                 ImageProcess.split_images(subfolder, train_dir, val_dir, test_dir, train_ratio, val_ratio, test_ratio)
 
+
 if __name__ == "__main__":
     source_directory = 'data/RSI-CB128-after_delete'
     output_directory = 'data/output'
+    test_data = 'data/output/test'
+    ImageProcess = ImageProcess()
     ImageProcess.process_all_subfolders(source_directory, output_directory)
+    data_dir = 'data/output/test'  # 指定你的数据文件夹路径
+    one_hot_matrix = ImageProcess.get_one_hot_labels(data_dir)
+
+    print("One-Hot Matrix Shape:", one_hot_matrix.shape)
+    print(one_hot_matrix)
+
+#  还未添加图像变化处理如旋转等
